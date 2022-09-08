@@ -1,22 +1,46 @@
-import type { GatsbyConfig } from "gatsby";
+import type { GatsbyConfig } from 'gatsby'
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `Tech Blog`,
-    siteUrl: `https://www.yourdomain.tld`
+    title: `Neverthless, Code`,
+    siteUrl: `https://johnkim.github.io`,
   },
-  // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.
-  // If you use VSCode you can also use the GraphQL plugin
-  // Learn more at: https://gatsby.dev/graphql-typegen
-  graphqlTypegen: true,
-  plugins: ["gatsby-plugin-mdx", {
-    resolve: 'gatsby-source-filesystem',
-    options: {
-      "name": "pages",
-      "path": "./src/pages/"
+  plugins: [
+    `gatsby-plugin-theme-ui`,
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `blog-posts`,
+        path: `${__dirname}/contents/posts/`,
+      },
     },
-    __key: "pages"
-  }]
-};
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `blog-pages`,
+        path: `${__dirname}/contents/pages/`,
+      },
+    },
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
+    {
+      resolve: `gatsby-plugin-mdx`,
+      options: {
+        gatsbyRemarkPlugins: [
+          `gatsby-remark-autolink-headers`,
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 960,
+              quality: 90,
+              linkImagesToOriginal: false,
+              backgroundColor: `transparent`,
+            },
+          },
+        ],
+      },
+    },
+  ],
+}
 
-export default config;
+export default config

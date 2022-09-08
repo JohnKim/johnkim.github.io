@@ -1,9 +1,9 @@
 {
-  "name": "tech-blog",
+  "name": "blog",
   "version": "1.0.0",
   "private": true,
-  "description": "tech-blog",
-  "author": "김요한/FO Product센터",
+  "description": "Neverthless, Code",
+  "author": "John Kim",
   "keywords": [
     "gatsby"
   ],
@@ -13,20 +13,46 @@
     "build": "gatsby build",
     "serve": "gatsby serve",
     "clean": "gatsby clean",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "deploy": "gatsby build --prefix-paths && gh-pages -d public"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@mdx-js/react": "^2.1.3",
-    "gatsby": "^4.21.1",
-    "gatsby-plugin-mdx": "^4.1.0",
-    "gatsby-source-filesystem": "^4.22.0",
+    "@theme-ui/color": "^0.14.7",
+    "@theme-ui/presets": "^0.14.7",
+    "gatsby": "next",
+    "gatsby-plugin-mdx": "next",
+    "gatsby-plugin-sharp": "next",
+    "gatsby-plugin-theme-ui": "next",
+    "gatsby-remark-autolink-headers": "next",
+    "gatsby-remark-images": "next",
+    "gatsby-remark-prismjs": "next",
+    "gatsby-source-filesystem": "next",
+    "gatsby-transformer-sharp": "next",
+    "mdast-util-to-string": "^3.1.0",
+    "prismjs": "^1.29.0",
     "react": "^18.1.0",
-    "react-dom": "^18.1.0"
+    "react-dom": "^18.1.0",
+    "reading-time": "^1.5.0",
+    "remark-gfm": "^3.0.1",
+    "remark-unwrap-images": "^3.0.1",
+    "slugify": "^1.6.5",
+    "theme-ui": "^0.14.7",
+    "unist-util-visit": "^4.1.1"
   },
   "devDependencies": {
     "@types/node": "^17.0.45",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "gh-pages": "^4.0.0",
+    "prettier": "^2.7.1",
     "typescript": "^4.8.2"
   }
 }
