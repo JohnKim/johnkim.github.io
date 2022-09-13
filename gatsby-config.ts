@@ -33,8 +33,8 @@ const config: GatsbyConfig = {
             options: {
               maxWidth: 960,
               quality: 90,
-              linkImagesToOriginal: false,
-              backgroundColor: `transparent`,
+              linkImagesToOriginal: true,
+              backgroundColor: `#FFFFFF`,
             },
           },
         ],

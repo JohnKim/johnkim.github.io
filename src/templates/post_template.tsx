@@ -54,7 +54,7 @@ const PostTemplate = ({ data: { mdx }, children }: PageProps<PostTemplateProps>)
       <section
         sx={{
           my: 5,
-          '.gatsby-resp-image-wrapper': { my: [4, 4, 5], boxShadow: shadow.join(`, `) },
+          '.gatsby-resp-image-wrapper': { my: [4, 4, 5] },
           variant: `layout.content`,
         }}
         ref={ref}
