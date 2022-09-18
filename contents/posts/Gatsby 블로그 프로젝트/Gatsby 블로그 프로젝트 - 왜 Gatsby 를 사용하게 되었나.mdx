@@ -99,6 +99,147 @@ Jekyll 은 설정 파일의 값을 변경하여 쉽고 간편하게 블로그 �
 Gatsby 는 개발, 빌드하는 거의 모든 과정에서 [Gatsby API](https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/) 를 제공하고 있어서 GraphQL 기반의 Data 스키마를 개발자가 원하는 대로 구성하거나, 다양한 기능들을 구현해 넣을 수 있다.
 블로그라면, 기본적인 Tags나 Categories 으로 컨텐츠 분류하고, 연재글을 모아 볼 수 있는 Series 기능도 구현해 볼 수도 있겠다. 본 블로그는 초기에 컨텐츠 양이 그렇게 크지 않을 것이기에, 우선 Tags 정도만 구현해 놓을 계획이고, 향후 기능을 더 추가해 보도록 하겠다.
 
+gatsby-node.ts 에서 Gatsby API 를 사용하게 되며, 본 블로그에서 구현한 파일은 [여기](https://github.com/JohnKim/johnkim.github.io/blob/main/gatsby-node.ts) 에서 전체 파일 내용을 확인할 수 있다.
+
+전체 흐름을 파악하기 위해 아래와 같이 요약해 본다.
+
+```javascript
+
+// Webpack 설정을 추가해 넣을 수 있다.
+// 본 블로그 프로젝트에서는 import 할 때 특정 폴더를 alias 를 추가 하는데 사용한다.
+export const onCreateWebpackConfig: GatsbyNode['onCreateWebpackConfig'] = ({ actions }) => {
+  actions.setWebpackConfig({
+    resolve: {
+      alias: {
+        components: path.resolve(__dirname, 'src/components'),
+        utils: path.resolve(__dirname, 'src/utils'),
+        hooks: path.resolve(__dirname, 'src/hooks'),
+      },
+    },
+  })
+}
+
+/**
+ * onCreateNode 는 새로운 노드가 생성 되고 난후 바로 실행되는 Gatsby API 이다.
+ * 본 블로그에서는 gatsby-plugin-mdx 플로그인 설정에 따라 MDX 노드가 생성될 때만 동작하도록 구현하였다.
+ *
+ * 참고 : https://www.gatsbyjs.com/docs/reference/config-files/gatsby-node/
+ */
+
+export const onCreateNode: GatsbyNode['onCreateNode'] = ({ actions, node, getNode, reporter }) => {
+  const { createNodeField } = actions
+
+  // MDX 파일 노드가 생성될 때만 동작하도록 한다.
+  if (node.internal.type === `Mdx`) {
+
+    ....
+
+    // frontmatter 에 slug 데이터를 MDX 노드의 slug 필드를 생성해서 저장한다.
+    // GraphQL Query 에서 frontmatter 의 slug 정보를 직접 사용해도 되지만, Query 를 간편하게 사용하기 위해 MDX 노드에 직접 생성하였다.
+    createNodeField({
+      node,
+      name: `slug`,
+      value: `/${frontmatter.slug || slugify(frontmatter.title)}`,
+    })
+
+    // 본문 내용을 바탕으로 읽는 시간을 계산하여 timeToRead 필드를 추가해 저장한다.
+    createNodeField({
+      node,
+      name: `timeToRead`,
+      value: readingTime(node.body as string),
+    })
+
+    // 그외 노드가 생성될 때마다, 원하는 필드를 생성하여 데이터를 넣을 수 있다.
+
+    ...
+
+}
+
+// createSchemaCustomization 는 스키마 타입을 생성할 때 사용하는 Gatsby API 이다.
+// 본 블로그 프로젝트에서는 Mdx 타입에 추가로 저장할 필드의 타입을 추가 하도록 했다.
+export const createSchemaCustomization: GatsbyNode['createSchemaCustomization'] = async ({
+  actions,
+}) => {
+
+  const { createTypes } = actions
+
+  // 필드를 추가하는데 사용되는 Extensions 과 Directives 는 아래 링크를 통해 알 수 있다.
+  // https://www.gatsbyjs.com/docs/reference/graphql-data-layer/schema-customization/#extensions-and-directives
+  createTypes(
+    `
+      # Mdx 스키마 타입에 추가 필드 설정
+      type Mdx implements Node {
+
+        # from fields
+        timeToRead: Float! @proxy(from: "fields.timeToRead.minutes")
+        wordCount: Int! @proxy(from: "fields.timeToRead.words")
+        slug: String! @proxy(from: "fields.slug")
+        defer: Boolean @proxy(from: "fields.defer")
+        tags: [PostTag] @proxy(from: "fields.tags")
+        banner: File @fileByRelativePath @proxy(from: "fields.banner")
+        source: String! @proxy(from: "fields.source")
+
+        # from frontmatters directly
+        title: String! @proxy(from: "frontmatter.title")
+        description: String @proxy(from: "frontmatter.description")
+        date: Date @dateformat @proxy(from: "frontmatter.date")
+      }
+
+      # Tag 데이터를 위한 스키마 타입 정의 추가
+      type PostTag {
+          name: String
+          slug: String
+      }
+    `,
+  )
+}
+
+/**
+ * createPages는 이제 실제로 페이지를 생성하는 GatsbyAPI 이다.
+ */
+export const createPages: GatsbyNode['createPages'] = async ({ graphql, actions, reporter }) => {
+
+  const { createPage } = actions
+
+  ...
+
+  // 생성한 페이지 파일 정보를 구한다.
+  const postTemplate = path.resolve(__dirname, 'src/templates/post_template.tsx')
+
+  // MDX 파일 노드를 GraphQL 로 조회 한다.
+  const result = await graphql<CreatePagesQueryResultType>(
+    `
+      query {
+        allMdx(sort: { fields: date, order: DESC }) {
+          nodes {
+            id
+            slug
+            source
+            defer
+          }
+        }
+      }
+    `,
+  )
+
+  // MDX 파일 노드별로 페이지를 생성한다.
+  const mdxNodes = result.data.allMdx.nodes
+  mdxNodes.forEach(node => {
+    createPage({
+      path: node.slug,
+      component: postTemplate,
+      context: {
+        id: node.id,
+      },
+      defer: node.defer,
+    })
+  })
+
+  ...
+
+}
+```
+
 ### 4. Plugins
 
 Gatsby 는 다양한 plugin들을 추가하여 기능을 확장 할 수 있다.

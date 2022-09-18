@@ -38,6 +38,16 @@ const config: GatsbyConfig = {
               backgroundColor: `#FFFFFF`,
             },
           },
+          {
+            resolve: 'gatsby-remark-prismjs',
+            options: {
+              classPrefix: 'language-',
+              //inlineCodeMarker: null,
+              // aliases: {},
+              // showLineNumbers: false,
+              noInlineHighlight: true,
+            },
+          },
         ],
       },
     },
