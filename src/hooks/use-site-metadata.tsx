@@ -5,6 +5,7 @@ type SiteMetadataType = {
     siteMetadata: {
       title: string
       siteUrl: string
+      description: string
     }
   }
 }
@@ -16,6 +17,7 @@ const useSiteMetadata = () => {
         siteMetadata {
           title
           siteUrl
+          description
         }
       }
     }

@@ -132,18 +132,18 @@ Node.js 경험이 있는 개발자라면 아래 가이드 링크를 통해 어�
 - [How to Create Plugins](https://www.gatsbyjs.com/docs/creating-plugins/)
 - [How to Create a Local Plugin](https://www.gatsbyjs.com/docs/creating-a-local-plugin/) : 로컬에 Plugin 을 개발하여 기능을 재사용한 가능한 모듈로 만드는 방법
 
-### 4. Documentation
+### 5. Documentation
 
 개발하는데 Tutorial 이나 참조 문서가 얼마나 풍부한지 역시 프레임워크 선택을 위해 반드시 고민해봐야 하는 부분이다.
 
 Gatsby에서 제공하는 [Gatsby Documentation](https://www.gatsbyjs.com/docs) 에는 설치 및 설정 부터 빌드, 배포까지 상당히 상세히 정리되어 있다.
 굳이 다른 개발자가 정리해 공유한 컨텐츠를 찾아볼 필요가 전혀 없을 정도라고 생각한다.
 
-### 5. Headless CMS
+### 6. Headless CMS
 
 이 블로그 프로젝트는, `gatsby-source-filesystem` Plugin 을 이용한 방법으로 파일을 데이터소스로 사용하고 있다.
 
-Gatsby 는 다양한 CMS(Contents Management System) 와 연결할 수 있다. 예를들어 [WordPress](https://wordpress.org/) 나 [Ghost](https://ghost.org/) 등 CMS 의 컨텐츠를 API 통해 가져와 Gatsby 의 GraphQL 기반의 Data Layer 에서 사용할 수 있는 Plugin 도 제공된다.
+Gatsby 는 다양한 CMS(Contents Management System) 와 연결할 수도 있다. 예를들어 [WordPress](https://wordpress.org/) 나 [Ghost](https://ghost.org/) 등 CMS 의 컨텐츠를 API 통해 가져와 Gatsby 의 GraphQL 기반의 Data Layer 에서 사용할 수 있는 Plugin 도 제공된다.
 심지어 Shopify 와 같은 Commerce platform 의 API 를 사용할 수도 있으며, 그외에도 다양한 Headless CMS 와의 연동을 구현할 수 있다.
 
 > Headless 란 '머리가 없다' 라는 단어인데, 그럼 머리는 무엇을 말하는가?
@@ -152,7 +152,7 @@ Gatsby 는 다양한 CMS(Contents Management System) 와 연결할 수 있다. �
 > 즉, '머리' 역할을 하는 UI Layer 대신 API Layer 를 두고, Gatsby는 이 API 를 사용하여 블로그 시스템을 구현하게 된다.
 
 이 블로그 시스템은 Markdown 파일로 작성한 파일을 기반으로 동작하기만 해도 충분하기에 Headless CMS 를 사용하지는 않았다.
-개인 블로그가 아닌 경우라면, 컨텐츠 규모와 현재 운영 중인 프로세스 및 시스템 상황에 따라 적용을 고민해 볼 문제이다.
+개인 블로그가 아닌 경우라면, 컨텐츠 규모와 현재 운영 중인 프로세스 및 시스템 상황에 맞게 적용을 고민해 볼 문제이다.
 
 ## 결론
 
@@ -168,7 +168,7 @@ Gatsby 는 UI 랜더링을 위해 React 를 사용하고, Data 를 관리하기 
 - React 기반이라 React 경험자에게 익숙한 환경이며, 다양한 React Component 를 재사용할 수 있다.
 - 다양한 Plugins 가 이미 제공되고 있고, 내가 직접 Plugin 을 만들어 모듈화 하기 용이 하다.
 - Gatsby API 를 사용하여 내가 구현하고자 하는 기능을 얼마든지 구현할 수 있다.
-- 문서화가 정말 잘되어 있어, 굳이 다른 문서를 찾아볼 필요가 없다.
+- 문서화가 정말 잘되어 있어, 구글링까지 할 필요도 없어 보인다.
 
 하지만, 분명히 단점도 있다.
 

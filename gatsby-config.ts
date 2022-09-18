@@ -4,6 +4,7 @@ const config: GatsbyConfig = {
   siteMetadata: {
     title: `Neverthless, Code`,
     siteUrl: `https://johnkim.github.io`,
+    description: `Nevertheless, We Coded !`,
   },
   plugins: [
     `gatsby-plugin-theme-ui`,
