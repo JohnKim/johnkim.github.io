@@ -11,6 +11,7 @@ import PostFooter from 'components/blog/post-footer'
 import MdxShortCodes from 'components/blog/mdx-shortcodes'
 import PostToc from 'components/blog/post-toc'
 import useOffsetTop from 'hooks/use-offset-top'
+import Comments from 'components/common/comments'
 
 type PostTemplateProps = {
   mdx: PostType
@@ -61,7 +62,7 @@ const PostTemplate = ({ data: { mdx }, children }: PageProps<PostTemplateProps>)
       >
         <MDXProvider components={MdxShortCodes}>{children}</MDXProvider>
       </section>
-
+      <Comments />
       <PostFooter post={mdx} />
     </Layout>
   )
